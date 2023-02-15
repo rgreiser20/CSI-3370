@@ -32,7 +32,7 @@ public class HomePage extends JFrame{
         setVisible(true);
     }//End setFrame
 
-    public void btnConfig(){
+    private void btnConfig(){
         newHomeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
