@@ -49,6 +49,16 @@ public class HomePage extends JFrame{
 
         //TODO: loadRoom Button
 
+        makeShapeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == makeShapeBtn){
+                    dispose();
+                    CustomShape customShape = new CustomShape();
+                }
+            }
+        });//End newRoomBtn actionListener
+
     }//End btnConfig
 
 
