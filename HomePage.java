@@ -63,11 +63,4 @@ public class HomePage extends JFrame{
 
 
 
-
-
-
-
-
-
-
 }//End MainPage class

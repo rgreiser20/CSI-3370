@@ -17,6 +17,7 @@ public class CustomShape extends JFrame{
     private JButton lineBtn;
     private JLabel shapePanelLbl;
     private JButton backBtn;
+    private JPanel topPanel;
 
     private final int FRAME_WIDTH = 800;
     private final int FRAME_HEIGHT = 800;

@@ -1,6 +1,11 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DesignHome extends JFrame{
     private JPanel backgroundPanel;
@@ -15,12 +20,21 @@ public class DesignHome extends JFrame{
     private JButton backBtn;
     private JPanel drawPanel;
 
-    private final int FRAME_WIDTH = 800;
+    private final int FRAME_WIDTH = 900;
     private final int FRAME_HEIGHT = 800;
+
+    ArrayList<Line2D.Float> lines = new ArrayList<Line2D.Float>();
+    Point2D.Float drawStart = null;
+    Point2D.Float drawEnd = null;
+
+    Point2D.Float controlPoint = null;
+
+    int currentAction;
 
     public DesignHome(){
         setFrame();
         btnConfig();
+
     }//End constructor
 
     private void setFrame(){
@@ -44,18 +58,51 @@ public class DesignHome extends JFrame{
             }
         });//End backBtn ActionListener
 
-        //TODO: Line Button
 
-        //TODO: Arc Button
+        lineBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == lineBtn){
+                    currentAction = 1;
+                    addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                            drawStart = new Point2D.Float(e.getX(), e.getY());
+                        }
 
-        //TODO: Room Selection Button
+                        @Override
+                        public void mouseReleased(MouseEvent e){
+                            drawEnd = new Point2D.Float(e.getX(), e.getY());
+                            Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
+                            lines.add(line2D);
+                            repaint();
+                        }
+                    });//End button mouseListener
+//                    LineShape line = new LineShape();
+                }
+            }
+        });//End lineBtn ActionListener
 
-        //TODO: Label Button
 
-        //TODO: Color Picker Button
 
-        //TODO: Delete Line Button
         
-    }//End btnConfig
+    }//End btnConfig method
 
-}//End DesignHome
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (currentAction == 1) {
+            Iterator<Line2D.Float> iterator = lines.iterator();
+            while (iterator.hasNext()) {
+                g2d.setStroke(new BasicStroke(2));
+                g2d.draw(iterator.next());
+            }
+        }
+
+
+    }//End paint method
+
+
+}//End DesignHome class
