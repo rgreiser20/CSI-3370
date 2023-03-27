@@ -66,7 +66,7 @@
             <properties>
               <background color="-8355715"/>
               <icon value="Images/TrashCan.png"/>
-              <text value="Delete Shape"/>
+              <text value="Undo Shape"/>
             </properties>
           </component>
         </children>

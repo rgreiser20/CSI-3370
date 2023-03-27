@@ -23,16 +23,16 @@ public class DesignHome extends JFrame{
     private final int FRAME_HEIGHT = 800;
 
 
-    private ArrayList<Shape> shapes = new ArrayList<Shape>();
+
+    private ArrayList<Shape> shapes = new ArrayList<Shape>(); //Hold all lines (shapes) that are drawn
     private Point2D.Float drawStart = null;
     private Point2D.Float drawEnd = null;
 
-    private int currentAction;
+    private int currentAction; //Variable that represents which button is pressed/active at the moment
 
     public DesignHome(){
         setFrame();
         btnConfig();
-
     }//End constructor
 
     private void setFrame(){
@@ -83,6 +83,19 @@ public class DesignHome extends JFrame{
             }
         });//End lineBtn ActionListener
 
+
+        undoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == undoBtn){
+                    currentAction = 6;
+                    int lastShape = shapes.size() - 1;
+                    shapes.remove(lastShape);
+                    repaint();
+                }
+            }
+        });//End undoBtn ActionListener
+
         
     }//End btnConfig method
 
@@ -90,12 +103,24 @@ public class DesignHome extends JFrame{
     public void paint(Graphics g) {
         super.paintComponents(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        //Iterates through the shapes arraylist
         Iterator<Shape> iterator = shapes.iterator();
+
+        //Makes drawn Lines smoother
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
 
-        //If the current action is the Line Button (represented as 1)
+        //If the current action is the Line Button (represented as 1 for the first button of JPanel)
         if (currentAction == 1) {
+            while (iterator.hasNext()) {
+                g2d.setStroke(new BasicStroke(2));
+                g2d.draw(iterator.next());
+            }
+        }
+
+        //If the current action is the Undo Button (represented as 6 for the sixth button of JPanel)
+        if(currentAction == 6){
             while (iterator.hasNext()) {
                 g2d.setStroke(new BasicStroke(2));
                 g2d.draw(iterator.next());
