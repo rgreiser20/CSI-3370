@@ -4,7 +4,6 @@ import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DesignHome extends JFrame{
     private JPanel backgroundPanel;
@@ -25,10 +24,12 @@ public class DesignHome extends JFrame{
 
 
     private ArrayList<Shape> shapes = new ArrayList<Shape>(); //Hold all lines (shapes) that are drawn
-    private Point2D.Float drawStart = null;
-    private Point2D.Float drawEnd = null;
-
+    private ArrayList<Color> colors = new ArrayList<Color>(); //Holds the colors of the shape
+    private Point2D.Float drawStart = null; //The starting point of the drawn shape
+    private Point2D.Float drawEnd = null; //The end point of the drawn shape
     private int currentAction; //Variable that represents which button is pressed/active at the moment
+
+    private Color color = null;
 
     public DesignHome(){
         setFrame();
@@ -65,6 +66,7 @@ public class DesignHome extends JFrame{
                     addMouseListener(new MouseAdapter() {
                         @Override
                         public void mousePressed(MouseEvent e) {
+
                             drawStart = new Point2D.Float(e.getX(), e.getY());
                         }
 
@@ -73,23 +75,37 @@ public class DesignHome extends JFrame{
                             drawEnd = new Point2D.Float(e.getX(), e.getY());
                             Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
                             shapes.add(line2D);
+                            colors.add(color);
                             repaint();
                         }
-
                     });
                 }
             }
         });//End lineBtn ActionListener
 
+        colorBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == colorBtn){
+                    currentAction = 5;
+                    JColorChooser colorChooser = new JColorChooser();
+                    color = JColorChooser.showDialog(null, "Color Picker", Color.BLACK);
+                }
+            }
+        });//End colorBtn ActionListener
 
         undoBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == undoBtn){
-                    currentAction = 6;
-                    int lastShape = shapes.size() - 1;
-                    shapes.remove(lastShape);
-                    repaint();
+                    if(shapes.isEmpty() && colors.isEmpty()){
+                        return;
+                    } else{
+                        currentAction = 6;
+                        shapes.remove(shapes.size() - 1);
+                        colors.remove(colors.size() - 1);
+                        repaint();
+                    }
                 }
             }
         });//End undoBtn ActionListener
@@ -102,31 +118,35 @@ public class DesignHome extends JFrame{
         super.paintComponents(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        //Iterates through the shapes arraylist
-        Iterator<Shape> iterator = shapes.iterator();
-
         //Makes drawn Lines smoother
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
 
         //If the current action is the Line Button (represented as 1 for the first button of JPanel)
         if (currentAction == 1) {
-            while (iterator.hasNext()) {
-                g2d.setStroke(new BasicStroke(2));
-                g2d.draw(iterator.next());
-            }
+            displayShapes(g2d);
+        }
+
+        //If the current action is the Color Picker Button (represent as 5 for the fifth button of JPanel)
+        if (currentAction == 5) {
+            displayShapes(g2d);
         }
 
         //If the current action is the Undo Button (represented as 6 for the sixth button of JPanel)
         if(currentAction == 6){
-            while (iterator.hasNext()) {
-                g2d.setStroke(new BasicStroke(2));
-                g2d.draw(iterator.next());
-            }
+            displayShapes(g2d);
         }
 
-
     }//End paint method
+
+
+    private void displayShapes(Graphics2D g2d){
+        for(int i=0; i<shapes.size(); i++){
+            g2d.setStroke(new BasicStroke(2));
+            g2d.setColor(colors.get(i));
+            g2d.draw(shapes.get(i));
+        }
+    }//End drawShapes method
 
 
 
