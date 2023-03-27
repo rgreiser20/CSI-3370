@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,7 +14,7 @@ public class DesignHome extends JFrame{
     private JButton roomBtn;
     private JButton labelBtn;
     private JButton colorBtn;
-    private JButton deleteBtn;
+    private JButton undoBtn;
     private JPanel bottomPanel;
     private JButton backBtn;
     private JPanel drawPanel;
@@ -23,13 +22,12 @@ public class DesignHome extends JFrame{
     private final int FRAME_WIDTH = 900;
     private final int FRAME_HEIGHT = 800;
 
-    ArrayList<Line2D.Float> lines = new ArrayList<Line2D.Float>();
-    Point2D.Float drawStart = null;
-    Point2D.Float drawEnd = null;
 
-    Point2D.Float controlPoint = null;
+    private ArrayList<Shape> shapes = new ArrayList<Shape>();
+    private Point2D.Float drawStart = null;
+    private Point2D.Float drawEnd = null;
 
-    int currentAction;
+    private int currentAction;
 
     public DesignHome(){
         setFrame();
@@ -56,7 +54,7 @@ public class DesignHome extends JFrame{
                     HomePage homePage = new HomePage();
                 }
             }
-        });//End backBtn ActionListener
+        });//END backBtn ActionListener
 
 
         lineBtn.addActionListener(new ActionListener() {
@@ -64,6 +62,8 @@ public class DesignHome extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == lineBtn){
                     currentAction = 1;
+                    System.out.println(currentAction);
+
                     addMouseListener(new MouseAdapter() {
                         @Override
                         public void mousePressed(MouseEvent e) {
@@ -71,30 +71,31 @@ public class DesignHome extends JFrame{
                         }
 
                         @Override
-                        public void mouseReleased(MouseEvent e){
+                        public void mouseReleased(MouseEvent e) {
                             drawEnd = new Point2D.Float(e.getX(), e.getY());
                             Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
-                            lines.add(line2D);
+                            shapes.add(line2D);
                             repaint();
                         }
-                    });//End button mouseListener
-//                    LineShape line = new LineShape();
+
+                    });
                 }
             }
         });//End lineBtn ActionListener
-
-
 
         
     }//End btnConfig method
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        super.paintComponents(g);
         Graphics2D g2d = (Graphics2D) g;
+        Iterator<Shape> iterator = shapes.iterator();
+        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHints(rh);
 
+        //If the current action is the Line Button (represented as 1)
         if (currentAction == 1) {
-            Iterator<Line2D.Float> iterator = lines.iterator();
             while (iterator.hasNext()) {
                 g2d.setStroke(new BasicStroke(2));
                 g2d.draw(iterator.next());
