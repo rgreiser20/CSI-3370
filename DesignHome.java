@@ -19,7 +19,7 @@ public class DesignHome extends JFrame{
     private JButton backBtn;
     private JPanel drawPanel;
 
-    private final int FRAME_WIDTH = 900;
+    private final int FRAME_WIDTH = 1000;
     private final int FRAME_HEIGHT = 800;
 
 
@@ -62,8 +62,6 @@ public class DesignHome extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == lineBtn){
                     currentAction = 1;
-                    System.out.println(currentAction);
-
                     addMouseListener(new MouseAdapter() {
                         @Override
                         public void mousePressed(MouseEvent e) {
@@ -129,6 +127,9 @@ public class DesignHome extends JFrame{
 
 
     }//End paint method
+
+
+
 
 
 }//End DesignHome class
