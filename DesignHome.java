@@ -63,16 +63,20 @@ public class DesignHome extends JFrame{
                 addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        drawStart = new Point2D.Float(e.getX(), e.getY());
+                        if(currentAction ==  1) {
+                            drawStart = new Point2D.Float(e.getX(), e.getY());
+                        }
                     }
 
                     @Override
                     public void mouseReleased(MouseEvent e) {
-                        drawEnd = new Point2D.Float(e.getX(), e.getY());
-                        Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
-                        shapes.add(line2D);
-                        colors.add(color);
-                        repaint();
+                        if(currentAction == 1) {
+                            drawEnd = new Point2D.Float(e.getX(), e.getY());
+                            Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
+                            shapes.add(line2D);
+                            colors.add(color);
+                            repaint();
+                        }
                     }
                 });
             }
@@ -114,20 +118,7 @@ public class DesignHome extends JFrame{
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
 
-        //If the current action is the Line Button (represented as 1 for the first button of JPanel)
-        if (currentAction == 1) {
-            displayShapes(g2d);
-        }
-
-        //If the current action is the Color Picker Button (represent as 5 for the fifth button of JPanel)
-        if (currentAction == 5) {
-            displayShapes(g2d);
-        }
-
-        //If the current action is the Undo Button (represented as 6 for the sixth button of JPanel)
-        if(currentAction == 6){
-            displayShapes(g2d);
-        }
+        displayShapes(g2d);
 
     }//End paint method
 
