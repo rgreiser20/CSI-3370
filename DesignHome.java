@@ -28,8 +28,9 @@ public class DesignHome extends JFrame{
     private Point2D.Float drawStart = null; //The starting point of the drawn shape
     private Point2D.Float drawEnd = null; //The end point of the drawn shape
     private int currentAction; //Variable that represents which button is pressed/active at the moment
+    private Color color;
 
-    private Color color = null;
+
 
     public DesignHome(){
         setFrame();
@@ -50,62 +51,53 @@ public class DesignHome extends JFrame{
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == backBtn){
-                    dispose();
-                    HomePage homePage = new HomePage();
-                }
+                dispose();
+                HomePage homePage = new HomePage();
             }
         });//END backBtn ActionListener
-
 
         lineBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == lineBtn){
-                    currentAction = 1;
-                    addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mousePressed(MouseEvent e) {
+                currentAction = 1;
+                addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        drawStart = new Point2D.Float(e.getX(), e.getY());
+                    }
 
-                            drawStart = new Point2D.Float(e.getX(), e.getY());
-                        }
-
-                        @Override
-                        public void mouseReleased(MouseEvent e) {
-                            drawEnd = new Point2D.Float(e.getX(), e.getY());
-                            Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
-                            shapes.add(line2D);
-                            colors.add(color);
-                            repaint();
-                        }
-                    });
-                }
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        drawEnd = new Point2D.Float(e.getX(), e.getY());
+                        Line2D.Float line2D = new Line2D.Float(drawStart, drawEnd);
+                        shapes.add(line2D);
+                        colors.add(color);
+                        repaint();
+                    }
+                });
             }
         });//End lineBtn ActionListener
 
         colorBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == colorBtn){
-                    currentAction = 5;
-                    JColorChooser colorChooser = new JColorChooser();
-                    color = JColorChooser.showDialog(null, "Color Picker", Color.BLACK);
-                }
+                currentAction = 5;
+                JColorChooser colorChooser = new JColorChooser();
+                color = JColorChooser.showDialog(null, "Color Picker", Color.BLACK);
+
             }
         });//End colorBtn ActionListener
 
         undoBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == undoBtn){
-                    if(shapes.isEmpty() && colors.isEmpty()){
-                        return;
-                    } else{
-                        currentAction = 6;
-                        shapes.remove(shapes.size() - 1);
-                        colors.remove(colors.size() - 1);
-                        repaint();
-                    }
+                currentAction = 6;
+                if(shapes.isEmpty() && colors.isEmpty()){
+                    return;
+                } else{
+                    shapes.remove(shapes.size() - 1);
+                    colors.remove(colors.size() - 1);
+                    repaint();
                 }
             }
         });//End undoBtn ActionListener
@@ -147,6 +139,7 @@ public class DesignHome extends JFrame{
             g2d.draw(shapes.get(i));
         }
     }//End drawShapes method
+
 
 
 
