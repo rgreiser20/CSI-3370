@@ -17,6 +17,7 @@ public class DesignHome extends JFrame{
     private JPanel bottomPanel;
     private JButton backBtn;
     private JPanel drawPanel;
+    private JButton saveBtn;
 
     private final int FRAME_WIDTH = 1000;
     private final int FRAME_HEIGHT = 800;
