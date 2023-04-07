@@ -12,7 +12,6 @@ public class DesignHome extends JFrame{
     private JPanel topPanel;
     private JButton lineBtn;
     private JButton arcBtn;
-    private JButton roomBtn;
     private JButton labelBtn;
     private JButton colorBtn;
     private JButton undoBtn;
@@ -27,9 +26,9 @@ public class DesignHome extends JFrame{
 
     private ArrayList<Shape> shapes = new ArrayList<Shape>(); //Hold all shapes that are drawn
     private ArrayList<Color> colors = new ArrayList<Color>(); //Holds the colors of the shape
+    private ArrayList<JButton> buttons = new ArrayList<JButton>(); //Holds the JButtons
     private Point2D.Float drawStart = null; //The starting point of the drawn shape
     private Point2D.Float drawEnd = null; //The end point of the drawn shape
-    private  Point2D.Float controlPoint = null; //The point used to control the curve of an arc
     private int currentAction; //Variable that represents which button is pressed/active at the moment
     private Color color;
 
@@ -87,14 +86,46 @@ public class DesignHome extends JFrame{
             }
         });//End lineBtn ActionListener
 
+        arcBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentAction = 2;
+                addMouseListener(new MouseAdapter() {
+                    Point2D.Float start = null;
+                    Point2D.Float end = null;
+                    Point2D.Float controlP = null;
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(currentAction == 2){
+                            if(start == null ){
+                                start = new Point2D.Float(e.getX(), e.getY());
+                            } else if (end == null) {
+                                end = new Point2D.Float(e.getX(), e.getY());
+                            } else if (controlP == null) {
+                                controlP = new Point2D.Float(e.getX(), e.getY());
+                                QuadCurve2D curve2D = new QuadCurve2D.Float();
+                                curve2D.setCurve(start, controlP, end);
+                                shapes.add(curve2D);
+                                colors.add(color);
+                                repaint();
+                                start = null;
+                                end = null;
+                                controlP = null;
+                            }
+                        }
+                    }
+                });
+            }
+        });//End arcBtn ActionListener
+
         labelBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentAction = 4;
+                currentAction = 3;
                 addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if(currentAction == 4) {
+                        if(currentAction == 3) {
                             int xPos = e.getX() - 52;
                             int yPos = e.getY() - 100;
 
@@ -104,6 +135,7 @@ public class DesignHome extends JFrame{
                             roomBtn.setLocation(xPos, yPos);
                             roomBtn.setSize(90,30);
                             drawPanel.add(roomBtn);
+                            buttons.add(roomBtn);
                             repaint();
                         }
                     }
@@ -115,7 +147,7 @@ public class DesignHome extends JFrame{
         colorBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentAction = 5;
+                currentAction = 4;
                 JColorChooser colorChooser = new JColorChooser();
                 color = JColorChooser.showDialog(null, "Color Picker", Color.BLACK);
             }
@@ -124,7 +156,7 @@ public class DesignHome extends JFrame{
         undoBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentAction = 6;
+                currentAction = 5;
                 if(shapes.isEmpty() && colors.isEmpty()){
                     return;
                 } else{
@@ -157,7 +189,7 @@ public class DesignHome extends JFrame{
             g2d.setColor(colors.get(i));
             g2d.draw(shapes.get(i));
         }
-    }//End drawShapes method
+    }//End displayShapes method
 
 
 
