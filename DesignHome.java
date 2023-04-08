@@ -20,8 +20,9 @@ public class DesignHome extends JFrame{
     private JPanel bottomPanel;
     private JButton backBtn;
     private JPanel drawPanel;
-    //saving functionality
+    //saving and loading functionality
     private JButton saveBtn;
+    private JButton loadBtn;
     JFileChooser fileChooser = new JFileChooser();
 
     private final int FRAME_WIDTH = 1000;
@@ -35,8 +36,9 @@ public class DesignHome extends JFrame{
     private Point2D.Float drawEnd = null; //The end point of the drawn shape
     private int currentAction; //Variable that represents which button is pressed/active at the moment
     private Color color;
-    public static BufferedImage image; // the image we are drawing
+    private static BufferedImage image; // the image we are drawing, for saving and loading
     private static Graphics2D g2d;
+    private ImagePanel imagePanel; // references our class for facilitating loading an image
 
 
     public DesignHome(){
@@ -133,6 +135,26 @@ public class DesignHome extends JFrame{
             }
         });//END saveBtn ActionListener
 
+        loadBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int userSelection = fileChooser.showOpenDialog(new JFrame());
+                imagePanel = new ImagePanel();
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToLoad = fileChooser.getSelectedFile();
+                    try {
+                        image = ImageIO.read(fileToLoad);
+                        imagePanel.setImage(image);
+                        drawPanel.add(imagePanel);
+                        JOptionPane.showMessageDialog(null, "Image Load Successful");
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error loading image: " + ex.getMessage());
+                    }
+                }
+            }
+        });//END loadBtn Listener
+
 
     }//End btnConfig method
 
@@ -153,6 +175,7 @@ public class DesignHome extends JFrame{
 
         // this object is what the user sees in the drawn panel
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         displayShapes(g2);
 
     }//End paint method
