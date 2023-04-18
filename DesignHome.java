@@ -1,8 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 public class DesignHome extends JFrame{
@@ -17,7 +20,10 @@ public class DesignHome extends JFrame{
     private JPanel bottomPanel;
     private JButton backBtn;
     private JPanel drawPanel;
+    //saving and loading functionality
     private JButton saveBtn;
+    private JButton loadBtn;
+    JFileChooser fileChooser = new JFileChooser();
 
     private final int FRAME_WIDTH = 1000;
     private final int FRAME_HEIGHT = 800;
@@ -30,7 +36,9 @@ public class DesignHome extends JFrame{
     private Point2D.Float drawEnd = null; //The end point of the drawn shape
     private int currentAction; //Variable that represents which button is pressed/active at the moment
     private Color color;
-
+    private static BufferedImage image; // the image we are drawing, for saving and loading
+    private static Graphics2D g2d;
+    private ImagePanel imagePanel; // references our class for facilitating loading an image
 
 
     public DesignHome(){
@@ -107,30 +115,92 @@ public class DesignHome extends JFrame{
             }
         });//End undoBtn ActionListener
 
-        
+        saveBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                System.out.println("save button pushed");
+                int userSelection = fileChooser.showSaveDialog(new JFrame());
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile();
+                    String filePath = fileToSave.getAbsolutePath();
+
+                    try {
+                        ImageIO.write(image, "png", new File(filePath));
+                        JOptionPane.showMessageDialog(null, "Image Save Successful");
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error saving image: " + ex.getMessage());
+                    }
+                }
+            }
+        });//END saveBtn ActionListener
+
+        loadBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int userSelection = fileChooser.showOpenDialog(new JFrame());
+                imagePanel = new ImagePanel();
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToLoad = fileChooser.getSelectedFile();
+                    try {
+                        image = ImageIO.read(fileToLoad);
+                        imagePanel.setImage(image);
+                        drawPanel.add(imagePanel);
+                        JOptionPane.showMessageDialog(null, "Image Load Successful");
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error loading image: " + ex.getMessage());
+                    }
+                }
+            }
+        });//END loadBtn Listener
+
+
     }//End btnConfig method
 
     @Override
     public void paint(Graphics g) {
         super.paintComponents(g);
-        Graphics2D g2d = (Graphics2D) g;
 
-        //Makes drawn Lines smoother
-        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHints(rh);
+        // this image will be drawn on in order to be saved as output
+        if(image == null) {
+            // image to draw null ==> we create
+            image = (BufferedImage) createImage(drawPanel.getWidth(), drawPanel.getHeight());
+            g2d = (Graphics2D) image.getGraphics();
+            // enable antialiasing
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            // clear draw area
+            clear();
+        }
 
-        displayShapes(g2d);
+        // this object is what the user sees in the drawn panel
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        displayShapes(g2);
 
     }//End paint method
 
 
-    private void displayShapes(Graphics2D g2d){
+    private void displayShapes(Graphics2D g2){
         for(int i=0; i<shapes.size(); i++){
+            //draw on image to save
             g2d.setStroke(new BasicStroke(2));
             g2d.setColor(colors.get(i));
             g2d.draw(shapes.get(i));
+            //draw on what is displayed to user
+            g2.setStroke(new BasicStroke(2));
+            g2.setColor(colors.get(i));
+            g2.draw(shapes.get(i));
         }
     }//End drawShapes method
+
+    public void clear() {
+        g2d.setPaint(Color.white);
+        // draw white on entire draw panel to clear
+        g2d.fillRect(drawPanel.getX(), drawPanel.getY(), drawPanel.getWidth(), drawPanel.getHeight());
+        g2d.setPaint(Color.black);
+        repaint();
+    }
 
 
 
