@@ -29,6 +29,9 @@
               <visible value="true"/>
             </properties>
           </component>
+          <hspacer id="d1bbc">
+            <constraints/>
+          </hspacer>
           <component id="fee31" class="javax.swing.JButton" binding="arcBtn">
             <constraints/>
             <properties>
@@ -37,14 +40,9 @@
               <text value="Arc"/>
             </properties>
           </component>
-          <component id="60f52" class="javax.swing.JButton" binding="roomBtn">
+          <hspacer id="ca05">
             <constraints/>
-            <properties>
-              <background color="-8355715"/>
-              <icon value="Images/Room.png"/>
-              <text value="Room Selection"/>
-            </properties>
-          </component>
+          </hspacer>
           <component id="e166" class="javax.swing.JButton" binding="labelBtn">
             <constraints/>
             <properties>
@@ -53,6 +51,9 @@
               <text value="Label"/>
             </properties>
           </component>
+          <hspacer id="1426e">
+            <constraints/>
+          </hspacer>
           <component id="f1c8e" class="javax.swing.JButton" binding="colorBtn">
             <constraints/>
             <properties>
@@ -61,6 +62,9 @@
               <text value="Color Picker"/>
             </properties>
           </component>
+          <hspacer id="aa86e">
+            <constraints/>
+          </hspacer>
           <component id="5c1ee" class="javax.swing.JButton" binding="undoBtn">
             <constraints/>
             <properties>
