@@ -46,6 +46,15 @@ public class HomePage extends JFrame{
         //TODO: loadHome Button
 
         //TODO: newRoom Button
+        newRoomBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == newRoomBtn){
+                    dispose();
+                    DesignRoom designRoom = new DesignRoom();
+                }
+            }
+        });//End newRoomBtn actionListener
 
         //TODO: loadRoom Button
 
@@ -57,7 +66,7 @@ public class HomePage extends JFrame{
                     CustomShape customShape = new CustomShape();
                 }
             }
-        });//End newRoomBtn actionListener
+        });//End makeShapeBtn actionListener
 
     }//End btnConfig
 
