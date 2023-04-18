@@ -13,7 +13,6 @@ public class DesignHome extends JFrame{
     private JPanel topPanel;
     private JButton lineBtn;
     private JButton arcBtn;
-    private JButton roomBtn;
     private JButton labelBtn;
     private JButton colorBtn;
     private JButton undoBtn;

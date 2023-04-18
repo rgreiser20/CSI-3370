@@ -37,14 +37,6 @@
               <text value="Arc"/>
             </properties>
           </component>
-          <component id="60f52" class="javax.swing.JButton" binding="roomBtn">
-            <constraints/>
-            <properties>
-              <background color="-8355715"/>
-              <icon value="Images/Room.png"/>
-              <text value="Room Selection"/>
-            </properties>
-          </component>
           <component id="e166" class="javax.swing.JButton" binding="labelBtn">
             <constraints/>
             <properties>
