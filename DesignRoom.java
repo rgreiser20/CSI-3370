@@ -9,20 +9,15 @@ import java.util.ArrayList;
 
 public class DesignRoom extends JFrame{
     private JPanel backgroundPanel;
-    private JPanel topPanel;
     private JButton lineBtn;
     private JButton ellipseBtn;
     private JButton rectangleBtn;
-    private JButton labelBtn;
     private JButton colorBtn;
     private JButton undoBtn;
-    private JPanel bottomPanel;
     private JButton backBtn;
-    private JPanel drawPanel;
 
     private final int FRAME_WIDTH = 1000;
     private final int FRAME_HEIGHT = 800;
-
 
 
     private ArrayList<Shape> shapes = new ArrayList<Shape>(); //Hold all lines (shapes) that are drawn
@@ -121,7 +116,6 @@ public class DesignRoom extends JFrame{
                                     }
                                 }
 
-
                                 Rectangle2D.Double rectangle2D = new Rectangle2D.Double(x, y, w, h);
                                 shapes.add(rectangle2D);
                                 colors.add(color);
@@ -160,7 +154,6 @@ public class DesignRoom extends JFrame{
                                         h = y1-y2;
                                     }
                                 }
-
 
                                 Ellipse2D.Double ellipse2D = new Ellipse2D.Double(x, y, w, h);
                                 shapes.add(ellipse2D);
@@ -239,8 +232,4 @@ public class DesignRoom extends JFrame{
         }
     }//End drawShapes method
 
-
-
-
-
-}//End DesignRoom class
+}

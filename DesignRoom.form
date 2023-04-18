@@ -36,7 +36,7 @@
               <background color="-8355715"/>
               <icon value="Images/Ellipse.png"/>
               <label value="Ellipse"/>
-              <preferredSize width="107" height="38"/>
+              <preferredSize width="137" height="38"/>
               <text value="Ellipse"/>
             </properties>
           </component>
@@ -48,16 +48,8 @@
               <icon value="Images/Rectangle.png"/>
               <maximumSize width="133" height="38"/>
               <minimumSize width="133" height="38"/>
-              <preferredSize width="126" height="38"/>
+              <preferredSize width="137" height="38"/>
               <text value="Rectangle"/>
-            </properties>
-          </component>
-          <component id="e166" class="javax.swing.JButton" binding="labelBtn">
-            <constraints/>
-            <properties>
-              <background color="-8355715"/>
-              <icon value="Images/LetterIcon.png"/>
-              <text value="Label"/>
             </properties>
           </component>
           <component id="f1c8e" class="javax.swing.JButton" binding="colorBtn">
