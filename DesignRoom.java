@@ -16,6 +16,11 @@ public class DesignRoom extends JFrame{
     private JButton undoBtn;
     private JButton backBtn;
 
+    private JPanel topPanel;
+
+    private JPanel bottomPanel;
+
+    private JPanel drawPanel;
     private final int FRAME_WIDTH = 1000;
     private final int FRAME_HEIGHT = 800;
 

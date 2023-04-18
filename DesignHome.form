@@ -37,6 +37,9 @@
             <properties>
               <background color="-8355715"/>
               <icon value="Images/Arc.png"/>
+              <maximumSize width="150" height="38"/>
+              <minimumSize width="0" height="38"/>
+              <preferredSize width="100" height="38"/>
               <text value="Arc"/>
             </properties>
           </component>
@@ -96,7 +99,10 @@
           </component>
           <component id="64afe" class="javax.swing.JButton" binding="saveBtn">
             <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="1" use-parent-layout="false">
+                <preferred-size width="100" height="-1"/>
+                <maximum-size width="100" height="100"/>
+              </grid>
             </constraints>
             <properties>
               <background color="-8355715"/>
